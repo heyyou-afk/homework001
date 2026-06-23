@@ -31,7 +31,7 @@
             background-image: linear-gradient(rgba(18, 24, 38, 0.5) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(18, 24, 38, 0.5) 1px, transparent 1px);
             background-size: 20px 20px;
-            font-size: 16px; 
+            font-size: 16px; /* 💡 全域基礎字體加大 */
         }
 
         .container {
@@ -52,7 +52,7 @@
         }
 
         header h1 {
-            font-size: 34px; 
+            font-size: 34px; /* 💡 大標題加大 */
             color: #fff;
             text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
             letter-spacing: 3px;
@@ -60,7 +60,7 @@
         }
 
         header p {
-            font-size: 16px; 
+            font-size: 16px; /* 💡 副標題加大 */
             color: var(--neon-green);
             text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
             font-weight: bold;
@@ -69,7 +69,7 @@
         .card {
             background: var(--bg-card);
             border-radius: 4px;
-            padding: 25px; 
+            padding: 25px; /* 💡 內距加大 */
             margin-bottom: 25px;
             border: 1px solid var(--border-glow);
             box-shadow: 0 6px 15px rgba(0,0,0,0.6);
@@ -82,7 +82,7 @@
         }
 
         .card-title {
-            font-size: 20px; 
+            font-size: 20px; /* 💡 卡片標題加大 */
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -102,12 +102,12 @@
 
         .btn {
             display: inline-block;
-            padding: 12px 24px; 
+            padding: 12px 24px; /* 💡 按鈕大小放大 */
             border: 1px solid transparent;
             border-radius: 2px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 15px; 
+            font-size: 15px; /* 💡 按鈕字體加大 */
             transition: all 0.2s;
             text-align: center;
             text-transform: uppercase;
@@ -131,7 +131,7 @@
             color: var(--neon-green); 
             width: 100%; 
             margin-top: 20px; 
-            font-size: 18px; 
+            font-size: 18px; /* 💡 執行按鈕加大 */
             text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
             box-shadow: inset 0 0 5px rgba(57, 255, 20, 0.2);
             padding: 15px;
@@ -150,17 +150,17 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            font-size: 15px; 
+            font-size: 15px; /* 💡 欄位標籤字體加大 */
             color: var(--text-main);
         }
 
         input, select {
             width: 100%;
-            padding: 14px; 
+            padding: 14px; /* 💡 輸入框加高 */
             background-color: #0d1117;
             border: 1px solid #21262d;
             border-radius: 2px;
-            font-size: 16px; 
+            font-size: 16px; /* 💡 輸入字體加大 */
             color: #fff;
             transition: all 0.2s;
         }
@@ -232,7 +232,7 @@
             border: 1px solid var(--neon-green);
             padding: 18px; 
             border-radius: 2px;
-            font-size: 18px; 
+            font-size: 18px; /* 💡 總計看板字體加大 */
             font-weight: bold;
             color: var(--neon-green);
             margin-top: 30px;
@@ -245,11 +245,11 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            font-size: 15px; 
+            font-size: 15px; /* 💡 表格明細字體加大 */
         }
 
         th, td { 
-            padding: 14px 12px; 
+            padding: 14px 12px; /* 💡 表格間距加大 */
             text-align: left; 
             border-bottom: 1px solid #1f242c; 
         }
@@ -278,7 +278,7 @@
         option.add-new-trigger { background-color: #1c122c; color: var(--neon-cyan); font-weight: bold; }
         
         #twdTotal {
-            font-size: 24px; 
+            font-size: 24px; /* 💡 新台幣即時換算總額加大 */
             font-weight: bold; 
             color: var(--neon-green); 
             background-color: #08120a;
@@ -495,14 +495,6 @@
         'MOP': 4.0000, 'SGD': 23.8000, 'MYR': 6.8500, 'ZWG': 0.0979
     };
 
-    // 💡 新增：統一獲取台灣本地 YYYY-MM-DD 日期的安全方法
-    function getLocalDateString(dateObj) {
-        const y = dateObj.getFullYear();
-        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-        const d = String(dateObj.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d}`;
-    }
-
     window.onload = function() {
         calculateCurrencyTotal();
         
@@ -515,8 +507,7 @@
             hourSelect.appendChild(opt);
         }
         
-        // 💡 修正：初始化篩選日期時，使用本地時區日期而非 ISOString
-        document.getElementById('filterDate').value = getLocalDateString(new Date());
+        document.getElementById('filterDate').value = new Date().toISOString().substring(0, 10);
     };
 
     function renameCustomField() {
@@ -679,4 +670,143 @@
             const randomFluc = (Math.random() * 4 - 2); 
             const finalPrice = (basePrice + randomFluc).toFixed(2);
             document.getElementById('stockPrice').value = finalPrice;
-            document.getElementById('stockTime').innerText = `⚡ TICKER_ONLINE // 實時
+            document.getElementById('stockTime').innerText = `⚡ TICKER_ONLINE // 實時串流報價：$${finalPrice}`;
+            calculateStockTotal();
+        } catch (error) {
+            document.getElementById('stockTime').innerText = `⚠️ TICKER_ERROR // 保持最後已知阻抗預設單價`;
+        }
+    }
+
+    function calculateCurrencyTotal() {
+        const amount = parseFloat(document.getElementById('currencyAmount').value) || 0;
+        const rate = parseFloat(document.getElementById('exchangeRate').value) || 0;
+        document.getElementById('twdTotal').value = Math.round(amount * rate);
+    }
+
+    function calculateStockTotal() {
+        const shares = parseFloat(document.getElementById('stockShares').value) || 0;
+        const price = parseFloat(document.getElementById('stockPrice').value) || 0;
+        const symbol = document.getElementById('stockSymbol').value.toUpperCase();
+        let usdToTwd = isNaN(symbol) ? fallbackRates['USD'] : 1; 
+        document.getElementById('twdTotal').value = Math.round(shares * price * usdToTwd);
+    }
+
+    async function submitToGAS() {
+        const assetType = document.getElementById('assetType').value;
+        const ledgerSelect = document.getElementById('ledgerSelect');
+        const ledgerName = ledgerSelect.options[ledgerSelect.selectedIndex].text.replace('📁 ', '').replace('💼 ', '').replace('✈️ ', '').replace('📈 ', '');
+        
+        const nowObj = new Date();
+        const dateTag = nowObj.toISOString().substring(0, 10);
+        const hourTag = nowObj.getHours() < 10 ? '0' + nowObj.getHours() : '' + nowObj.getHours();
+        const timeStr = nowObj.toLocaleTimeString();
+
+        let logData = {
+            ledger: ledgerName,
+            date: dateTag,
+            hour: hourTag,
+            time: timeStr,
+            type: assetType === 'currency' ? '外匯/加密' : '證券',
+            symbol: assetType === 'currency' ? document.getElementById('currencyPair').value : document.getElementById('stockSymbol').value.toUpperCase(),
+            amount: document.getElementById('currencyAmount').value,
+            priceOrRate: document.getElementById('exchangeRate').value,
+            customTag: document.getElementById('customFieldValue').value || '未分類',
+            twdTotal: parseInt(document.getElementById('twdTotal').value) || 0,
+            note: document.getElementById('note').value || '無'
+        };
+
+        if(assetType !== 'currency') {
+            logData.amount = document.getElementById('stockShares').value;
+            logData.priceOrRate = document.getElementById('stockPrice').value;
+        }
+
+        allRecordsMemory.unshift(logData);
+        
+        updateCustomTagFilterOptions();
+        renderTable();
+        
+        try {
+            await fetch(GAS_WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(logData)
+            });
+            alert(`[SUCCESS] 封包已安全寫入矩陣：[${ledgerName}] 並同步至 Google Sheet！`);
+        } catch (error) {
+            alert('[SYNC_WARNING] 雲端通道受阻，封包暫存於本地網頁沙盒中。');
+        }
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('historyTbody');
+        tbody.innerHTML = '';
+
+        const ledgerSelect = document.getElementById('ledgerSelect');
+        const activeLedgerName = ledgerSelect.options[ledgerSelect.selectedIndex].text.replace('📁 ', '').replace('💼 ', '').replace('✈️ ', '').replace('📈 ', '');
+
+        if(allRecordsMemory.length === 0) {
+            tbody.innerHTML = `<tr id="emptyHintRow"><td colspan="10" class="text-center" style="color: var(--text-dim); font-family: monospace;">[ SYSTEM_EMPTY // 暫無歷史快照紀錄，請啟動上方交易矩陣 ]</td></tr>`;
+            document.getElementById('filterSummary').innerText = `📈 COUNTER_SUM // 目前篩選條件下折合台幣總計：$0 TWD`;
+            return;
+        }
+
+        const filterDate = document.getElementById('filterDate').value;
+        const filterHour = document.getElementById('filterHour').value;
+        const filterCurrency = document.getElementById('filterCurrency').value;
+        const filterCustomTag = document.getElementById('filterCustomTag').value;
+        const isSumEnabled = document.getElementById('autoSumToggle').checked;
+
+        let filteredSum = 0;
+
+        allRecordsMemory.forEach(item => {
+            const matchLedger = item.ledger === activeLedgerName;
+            const matchDate = !filterDate || item.date === filterDate;
+            
+            let targetHour = filterHour === 'all' ? 'all' : filterHour.split(' ')[1].substring(0,2);
+            const matchHourCorrect = filterHour === 'all' || item.hour === targetHour;
+            
+            const matchCurr = filterCurrency === 'all' || item.symbol === filterCurrency;
+            const matchCustomTag = filterCustomTag === 'all' || item.customTag === filterCustomTag;
+
+            if(matchLedger && matchDate && matchHourCorrect && matchCurr && matchCustomTag) {
+                if(isSumEnabled) { filteredSum += item.twdTotal; }
+                
+                const row = `<tr>
+                    <td><span class="badge-ledger">${item.ledger}</span></td>
+                    <td><strong>${item.date}</strong></td>
+                    <td>${item.time} (${item.hour}H)</td>
+                    <td><span class="badge-income">${item.type}</span></td>
+                    <td><code>${item.symbol}</code></td>
+                    <td>${item.amount}</td>
+                    <td>${item.priceOrRate}</td>
+                    <td><span class="badge-tag">${item.customTag}</span></td>
+                    <td class="text-right" style="font-weight:bold; color:var(--neon-green); text-shadow:0 0 5px rgba(57,255,20,0.3);">$${item.twdTotal.toLocaleString()}</td>
+                    <td>${item.note}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            }
+        });
+
+        if(tbody.innerHTML === '') {
+            tbody.innerHTML = `<tr><td colspan="10" class="text-center" style="color: var(--neon-pink);">[ WARNING // 該編譯篩選區間下無任何有效資產明細 ]</td></tr>`;
+        }
+
+        if(isSumEnabled) {
+            document.getElementById('filterSummary').innerText = `📈 COUNTER_SUM // 目前 [${activeLedgerName}] 篩選條件下折合台幣總計：$${filteredSum.toLocaleString()} TWD`;
+        }
+    }
+
+    function filterRecords() { renderTable(); }
+
+    function resetFilters() {
+        document.getElementById('filterDate').value = '';
+        document.getElementById('filterHour').value = 'all';
+        document.getElementById('filterCurrency').value = 'all';
+        document.getElementById('filterCustomTag').value = 'all';
+        renderTable();
+    }
+</script>
+
+</body>
+</html>
